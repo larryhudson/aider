@@ -28,7 +28,7 @@ from aider.repo import ANY_GIT_ERROR, GitRepo
 from aider.repomap import RepoMap
 from aider.run_cmd import run_cmd
 from aider.sendchat import retry_exceptions, send_completion
-from aider.utils import format_content, format_messages, format_tokens, is_image_file
+from aider.utils import format_content, format_messages, format_tokens, is_image_file, get_stdout_encoding
 
 from ..dump import dump  # noqa: F401
 from .chat_chunks import ChatChunks
@@ -1518,8 +1518,9 @@ class Coder:
                     sys.stdout.write(text)
                 except UnicodeEncodeError:
                     # Safely encode and decode the text
-                    safe_text = text.encode(sys.stdout.encoding, errors="backslashreplace").decode(
-                        sys.stdout.encoding
+                    stdout_encoding = get_stdout_encoding()
+                    safe_text = text.encode(stdout_encoding, errors="backslashreplace").decode(
+                        stdout_encoding
                     )
                     sys.stdout.write(safe_text)
                 sys.stdout.flush()

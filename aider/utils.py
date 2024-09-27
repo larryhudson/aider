@@ -15,6 +15,7 @@ from aider.dump import dump  # noqa: F401
 
 IMAGE_EXTENSIONS = {".png", ".jpg", ".jpeg", ".gif", ".bmp", ".tiff", ".webp"}
 
+DEFAULT_STDOUT_ENCODING = 'utf-8'
 
 class IgnorantTemporaryDirectory:
     def __init__(self):
@@ -223,6 +224,9 @@ def get_pip_install(args):
     return cmd
 
 
+def get_stdout_encoding():
+    return getattr(sys.stdout, 'encoding', DEFAULT_STDOUT_ENCODING)
+
 def run_install(cmd):
     print()
     print("Installing:", printable_shell_command(cmd))
@@ -236,7 +240,7 @@ def run_install(cmd):
             text=True,
             bufsize=1,
             universal_newlines=True,
-            encoding=sys.stdout.encoding,
+            encoding=get_stdout_encoding(),
             errors="replace",
         )
         spinner = Spinner("Installing...")

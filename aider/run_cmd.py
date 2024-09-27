@@ -7,6 +7,9 @@ from io import BytesIO
 import pexpect
 import psutil
 
+from aider.utils import get_stdout_encoding
+
+
 
 def run_cmd(command, verbose=False, error_print=None):
     try:
@@ -65,7 +68,7 @@ def run_cmd_subprocess(command, verbose=False):
             stderr=subprocess.STDOUT,
             text=True,
             shell=True,
-            encoding=sys.stdout.encoding,
+            encoding=get_stdout_encoding(),
             errors="replace",
             bufsize=0,  # Set bufsize to 0 for unbuffered output
             universal_newlines=True,
